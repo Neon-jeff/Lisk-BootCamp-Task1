@@ -2,12 +2,12 @@
 pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
-import "../src/SampleGame.sol"; // change SampleGame to LotteryGame
+import "../src/LotteryGame.sol"; // change SampleGame to LotteryGame;
 
 contract SampleGameTest is
     Test // change SampleGame to LotteryGame
 {
-    SampleGame public game; // change SampleGame to LotteryGame
+    LotteryGame public game; // change SampleGame to LotteryGame
     address public owner;
     address public player1;
     address public player2;
@@ -24,7 +24,7 @@ contract SampleGameTest is
         vm.deal(player2, 1 ether);
         vm.deal(player3, 1 ether);
 
-        game = new SampleGame(); // change SampleGame to LotteryGame
+        game = new LotteryGame(); // change SampleGame to LotteryGame
     }
 
     function testRegisterWithCorrectAmount() public {
@@ -32,7 +32,7 @@ contract SampleGameTest is
         game.register{value: 0.02 ether}();
 
         (uint256 attempts, bool active) = game.players(player1);
-        assertEq(attempts, 0);
+        assertEq(attempts, 2);
         assertTrue(active);
         assertEq(game.totalPrize(), 0.02 ether);
     }
@@ -41,6 +41,7 @@ contract SampleGameTest is
         vm.prank(player1);
         vm.expectRevert("Please stake 0.02 ETH");
         game.register{value: 0.01 ether}();
+       
     }
 
     function testGuessNumberInValidRange() public {
